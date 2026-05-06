@@ -1,21 +1,434 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="styles/styles.css">
-        <script src="components/header.js"></script>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Brain Music Lab teaches circuits, music technology, and biosignals with videos, quizzes, and hands-on browser activities." />
+  <title>Brain Music Lab</title>
 
-        <title>Brain Music Lab</title>
-    </head>
-    <body>
-        <!-- Header -->
-        <bml-header></bml-header>
+  <!-- Google Fonts: Baloo 2 is used for headings (playful, chunky),
+       Nunito for body text (friendly and easy to read at small sizes).
+       preconnect hints tell the browser to open the connection early. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
 
-        <!-- Main content -->
-        <main>
-            <!-- <h1 styles="text-align: center">Brain Music Lab</h1> -->
+  <link rel="stylesheet" href="styles.css" />
 
-        </main>
-    </body>
+  <!-- defer means the script downloads in parallel with HTML parsing
+       and only runs after the DOM is fully built. -->
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <!-- Skip link: visually hidden until focused via keyboard.
+       Screen reader and keyboard users can jump straight to the
+       main content, bypassing the navigation on every page. -->
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- Sticky Navigation
+       The header sticks to the top of the viewport as the user scrolls.
+       aria-label on <nav> names it for screen readers (since there's
+       also a footer nav). The hamburger button (.nav-toggle) is hidden
+       on desktop and shown on mobile via CSS; JavaScript handles toggling
+       the .open class and keeping aria-expanded in sync. -->
+  <header class="site-header">
+    <nav class="navbar" aria-label="Primary">
+      <a class="brand" href="#home">Brain Music Lab</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul id="nav-links" class="nav-links">
+        <li><a href="#lessons">Lessons</a></li>
+        <li><a href="#lesson-1">Circuits</a></li>
+        <li><a href="#lesson-2">Music</a></li>
+        <li><a href="#lesson-3">Heartbeat</a></li>
+        <li><a href="#activity-hub">Activities</a></li>
+        <li><a href="#parents">For Adults</a></li>
+      </ul>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false" aria-label="Toggle dark mode">
+        <span aria-hidden="true">🌗</span>
+        <span>Theme</span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <!-- Hero Section
+         Full-bleed section with a background video of brain activity,
+         overlaid with a dark gradient so the white text stays readable.
+         The video is muted, autoplaying, and looping as pure decoration
+         (aria-hidden="true" hides it from assistive technology).
+         The two CTA buttons link to the lessons and activity hub below. -->
+    <section id="home" class="hero section reveal">
+      <div class="hero-media" aria-hidden="true">
+        <video class="hero-video" autoplay muted loop playsinline preload="metadata">
+          <source src="./assets/spontaneous_brain_activity_i.mp4" type="video/mp4" />
+        </video>
+        <div class="hero-overlay"></div>
+      </div>
+      <div class="hero-content">
+        <p class="tag">Brain Music Lab</p>
+        <h1>Learn how circuits, sound, music, and biosignals work through fun experiments.</h1>
+        <p class="hero-intro">
+          Explore science with videos, quick experiments, and interactive mini-labs designed for curious learners.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#lessons">Start Learning</a>
+          <a class="btn btn-secondary" href="#activity-hub">Try an Activity</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lessons Overview
+         Three card links that give users a quick preview of each lesson
+         and let them jump directly to the section they're interested in. -->
+    <section id="lessons" class="section reveal">
+      <div class="section-heading">
+        <h2>Lesson Pathway</h2>
+        <p>Pick a lesson, watch the video, test your understanding, then jump into experiments.</p>
+      </div>
+      <div class="card-grid three-up">
+        <article class="card lesson-card">
+          <h3>Lesson 1: Electric Circuits</h3>
+          <p>Build your first loop with a battery, wires, and an LED while learning conductors and insulators.</p>
+          <a class="btn btn-small" href="#lesson-1">Go to Lesson 1</a>
+        </article>
+        <article class="card lesson-card">
+          <h3>Lesson 2: Music + Microcontrollers</h3>
+          <p>See how code turns vibrations into melody with buzzers, frequencies, and blinking LEDs.</p>
+          <a class="btn btn-small" href="#lesson-2">Go to Lesson 2</a>
+        </article>
+        <article class="card lesson-card">
+          <h3>Lesson 3: Heartbeat Music</h3>
+          <p>Discover how PPG sensors read blood flow and can control music tempo in real time.</p>
+          <a class="btn btn-small" href="#lesson-3">Go to Lesson 3</a>
+        </article>
+      </div>
+
+      <!-- GitHub Link to Hardware Code
+           Direct learners to the companion repository where they can find
+           all the Arduino code, circuit diagrams, and hardware setup guides. -->
+      <article class="card">
+        <h3>Building the Hardware?</h3>
+        <p>All the Arduino code, circuit diagrams, and setup guides for these lessons live in our GitHub repository. Check it out to get the full hands-on experience.</p>
+        <a class="btn btn-primary" href="https://github.com/Brain-Music-Lab/BML_Tutorials" target="_blank" rel="noopener noreferrer">Visit BML_Tutorials on GitHub →</a>
+      </article>
+    </section>
+
+    <!-- Lesson 1: Electric Circuits
+         Layout: video embed on the left, summary card on the right.
+         Below that: a "what you'll learn" card alongside the quiz.
+         The mini-activity (Conductor Sort) sits below both.
+         aria-labelledby ties the section to its heading for screen readers. -->
+    <section id="lesson-1" class="section lesson reveal" aria-labelledby="lesson-1-title">
+      <div class="section-heading">
+        <h2 id="lesson-1-title">Electric Circuits: Build Your First Light-Up Circuit</h2>
+      </div>
+      <div class="lesson-layout">
+        <div class="video-wrap">
+          <iframe
+            src="https://www.youtube.com/embed/5BFOvzcK2aw"
+            title="Electric Circuits lesson video"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <article class="card text-card">
+          <h3>Lesson Summary</h3>
+          <p>This lesson introduces electric circuits as paths that electricity travels through, like a racetrack for tiny electrons that must form a complete loop. Students learn the three key parts of a simple circuit: a power source (battery), a load (like a light bulb or LED), and wires that connect everything.</p>
+          <p>The video explains conductors and insulators using everyday objects, then zooms down to atoms and free electrons to show why metals conduct while materials like rubber and plastic block current. Learners test which example circuits will work and finally build a real LED circuit on a breadboard, seeing how a closed circuit lights the LED and an open one makes it go dark.</p>
+        </article>
+      </div>
+      <div class="card-grid two-up">
+        <article class="card">
+          <h3>What you&apos;ll learn</h3>
+          <ul class="learn-list">
+            <li>How electricity needs a complete loop to flow.</li>
+            <li>The role of a battery, wires, and an LED in a circuit.</li>
+            <li>Why metal objects often conduct and rubber/plastic usually insulate.</li>
+            <li>How open and closed circuits change what happens in real builds.</li>
+          </ul>
+        </article>
+        <article class="card quiz" data-quiz="quiz1">
+          <h3>Mini Quiz: Circuits</h3>
+          <form>
+            <fieldset>
+              <legend>1. What must happen for an LED to light?</legend>
+              <label><input type="radio" name="q1" value="a" /> The wire can be broken</label>
+              <label><input type="radio" name="q1" value="b" /> The circuit must be a complete loop</label>
+              <label><input type="radio" name="q1" value="c" /> The battery is optional</label>
+            </fieldset>
+            <fieldset>
+              <legend>2. Which is usually a conductor?</legend>
+              <label><input type="radio" name="q2" value="a" /> Plastic straw</label>
+              <label><input type="radio" name="q2" value="b" /> Rubber eraser</label>
+              <label><input type="radio" name="q2" value="c" /> Metal screw</label>
+            </fieldset>
+            <fieldset>
+              <legend>3. An open circuit means...</legend>
+              <label><input type="radio" name="q3" value="a" /> Current cannot flow through the full path</label>
+              <label><input type="radio" name="q3" value="b" /> The bulb gets brighter</label>
+              <label><input type="radio" name="q3" value="c" /> There are two batteries</label>
+            </fieldset>
+            <button class="btn btn-small check-quiz" type="button">Check Answers</button>
+            <p class="quiz-result" aria-live="polite"></p>
+          </form>
+        </article>
+      </div>
+      <article class="card mini-activity">
+        <h3>Quick Activity: Conductor Sort</h3>
+        <p>Choose materials you think allow electricity to travel and test your prediction.</p>
+        <div class="chips" id="conductor-sort" role="group" aria-label="Conductor selection">
+          <button type="button" class="chip" data-material="metal">Metal Screw</button>
+          <button type="button" class="chip" data-material="plastic">Plastic Straw</button>
+          <button type="button" class="chip" data-material="rubber">Rubber Band</button>
+          <button type="button" class="chip" data-material="graphite">Pencil Lead</button>
+        </div>
+        <button type="button" class="btn btn-small" id="test-materials">Test My Choices</button>
+        <!-- aria-live="polite" tells screen readers to announce changes
+             to this element without interrupting ongoing speech. -->
+        <p id="conductor-feedback" class="activity-feedback" aria-live="polite"></p>
+      </article>
+    </section>
+
+    <!-- Lesson 2: Music + Microcontrollers
+         Same layout as Lesson 1. The mini-activity here is the
+         Frequency Match slider, where students tune to 440 Hz. -->
+    <section id="lesson-2" class="section lesson reveal" aria-labelledby="lesson-2-title">
+      <div class="section-heading">
+        <h2 id="lesson-2-title">Making Music with Microcontrollers: From Sound Waves to Songs</h2>
+      </div>
+      <div class="lesson-layout">
+        <div class="video-wrap">
+          <iframe
+            src="https://www.youtube.com/embed/6HlUoqLkoSo"
+            title="Making Music with Microcontrollers lesson video"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <article class="card text-card">
+          <h3>Lesson Summary</h3>
+          <p>Students meet microcontrollers as tiny "robot brains" that listen, think, and act using inputs, programs, and outputs. The lesson explains what sound is, how vibrations create sound waves, and how music organizes sound through pitch, rhythm, melody, and harmony.</p>
+          <p>Each note&apos;s frequency is introduced as how many times a sound wave goes up and down per second, connecting higher frequencies with higher pitches. In the experiments, learners wire a buzzer and then four LEDs to an Arduino, upload example code using the tone command, and hear simple tunes while LEDs blink, then are encouraged to experiment and compose their own patterns.</p>
+        </article>
+      </div>
+      <div class="card-grid two-up">
+        <article class="card">
+          <h3>What you&apos;ll learn</h3>
+          <ul class="learn-list">
+            <li>How microcontrollers take input, run code, and create outputs.</li>
+            <li>How vibrations become sound waves.</li>
+            <li>How frequency connects to pitch in music.</li>
+            <li>How rhythm and melody can be coded and tested.</li>
+          </ul>
+        </article>
+        <article class="card quiz" data-quiz="quiz2">
+          <h3>Mini Quiz: Sound + Code</h3>
+          <form>
+            <fieldset>
+              <legend>1. Higher frequency usually means...</legend>
+              <label><input type="radio" name="q1" value="a" /> Lower pitch</label>
+              <label><input type="radio" name="q1" value="b" /> Higher pitch</label>
+              <label><input type="radio" name="q1" value="c" /> No sound</label>
+            </fieldset>
+            <fieldset>
+              <legend>2. A microcontroller is best described as...</legend>
+              <label><input type="radio" name="q2" value="a" /> A tiny programmable computer</label>
+              <label><input type="radio" name="q2" value="b" /> A speaker only</label>
+              <label><input type="radio" name="q2" value="c" /> A battery type</label>
+            </fieldset>
+            <fieldset>
+              <legend>3. Rhythm in music is mostly about...</legend>
+              <label><input type="radio" name="q3" value="a" /> Sound color only</label>
+              <label><input type="radio" name="q3" value="b" /> Timing patterns of notes</label>
+              <label><input type="radio" name="q3" value="c" /> Volume only</label>
+            </fieldset>
+            <button class="btn btn-small check-quiz" type="button">Check Answers</button>
+            <p class="quiz-result" aria-live="polite"></p>
+          </form>
+        </article>
+      </div>
+      <article class="card mini-activity">
+        <h3>Quick Activity: Frequency Match</h3>
+        <p>Try to match a target frequency by moving the slider, then listen.</p>
+        <label for="freq-match-slider">Your frequency: <span id="freq-match-value">440</span> Hz</label>
+        <input id="freq-match-slider" type="range" min="120" max="1200" value="440" />
+        <button type="button" class="btn btn-small" id="play-freq-match">Play Tone</button>
+        <p class="activity-feedback" id="freq-match-feedback">Tip: 440 Hz is a common concert A note.</p>
+      </article>
+    </section>
+
+    <!-- Lesson 3: Heartbeat + PPG Sensors
+         No mini-activity in this lesson — the full Pulse-to-Tempo
+         Drum Lab in the Activity Hub covers the heartbeat concept
+         in a more hands-on way. -->
+    <section id="lesson-3" class="section lesson reveal" aria-labelledby="lesson-3-title">
+      <div class="section-heading">
+        <h2 id="lesson-3-title">See Your Heartbeat: PPG Sensors and Heartbeat Music</h2>
+      </div>
+      <div class="lesson-layout">
+        <div class="video-wrap">
+          <iframe
+            src="https://www.youtube.com/embed/kJbJfyPdm00"
+            title="Heartbeat sensors and music lesson video"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <article class="card text-card">
+          <h3>Lesson Summary</h3>
+          <p>This tutorial introduces photoplethysmography (PPG) as a way to spy on blood flow and heartbeats using light instead of X-rays. Students imagine themselves as red blood cells while a PPG sensor shines red or infrared light into the skin and measures tiny changes in reflected light as blood volume rises and falls with each heartbeat.</p>
+          <p>After a simple phone flashlight demo where their glowing finger reveals pulsating blood, learners build a PPG monitoring system using a DF Robot oxygen sensor and an Arduino, then watch their heartbeat signal in the serial monitor. The video ends by adding a buzzer so their heartbeat can control song speed, inviting them to experiment at home and share results.</p>
+        </article>
+      </div>
+      <div class="card-grid two-up">
+        <article class="card">
+          <h3>What you&apos;ll learn</h3>
+          <ul class="learn-list">
+            <li>What PPG stands for and why light can detect pulse changes.</li>
+            <li>How blood volume changes create a repeating sensor signal.</li>
+            <li>How heartbeats can control music timing.</li>
+            <li>How biosignal projects combine biology, electronics, and coding.</li>
+          </ul>
+        </article>
+        <article class="card quiz" data-quiz="quiz3">
+          <h3>Mini Quiz: Biosignals</h3>
+          <form>
+            <fieldset>
+              <legend>1. PPG sensors mainly use...</legend>
+              <label><input type="radio" name="q1" value="a" /> Light changes through skin</label>
+              <label><input type="radio" name="q1" value="b" /> Sound echoes only</label>
+              <label><input type="radio" name="q1" value="c" /> Magnets in blood</label>
+            </fieldset>
+            <fieldset>
+              <legend>2. If BPM increases, heartbeat music usually...</legend>
+              <label><input type="radio" name="q2" value="a" /> Slows down</label>
+              <label><input type="radio" name="q2" value="b" /> Speeds up</label>
+              <label><input type="radio" name="q2" value="c" /> Stops completely</label>
+            </fieldset>
+            <fieldset>
+              <legend>3. Why is this project cross-disciplinary?</legend>
+              <label><input type="radio" name="q3" value="a" /> It uses only biology</label>
+              <label><input type="radio" name="q3" value="b" /> It combines biosignals, electronics, and coding</label>
+              <label><input type="radio" name="q3" value="c" /> It avoids technology</label>
+            </fieldset>
+            <button class="btn btn-small check-quiz" type="button">Check Answers</button>
+            <p class="quiz-result" aria-live="polite"></p>
+          </form>
+        </article>
+      </div>
+    </section>
+
+    <!-- Activity Hub
+         Three standalone browser-based experiments that reinforce
+         each lesson's concepts. They're stacked vertically (.stack
+         grid) so each one gets plenty of breathing room.
+
+         A. Circuit Builder  — checkbox simulator, lights the bulb
+         B. Music Playground — pitch + rhythm sliders with live audio
+         C. Pulse-to-Tempo   — BPM-driven drum machine with visuals -->
+    <section id="activity-hub" class="section reveal" aria-labelledby="activity-hub-title">
+      <div class="section-heading">
+        <h2 id="activity-hub-title">Interactive Activity Hub</h2>
+        <p>Experiment in your browser and see science ideas in action.</p>
+      </div>
+      <div class="card-grid stack">
+        <article class="card" id="circuit-builder">
+          <h3>A. Circuit Builder</h3>
+          <p>Select components and test whether your circuit lights the bulb.</p>
+          <div class="selection-grid" role="group" aria-label="Select circuit components">
+            <label><input type="checkbox" value="battery" /> Battery</label>
+            <label><input type="checkbox" value="wire" /> Wire</label>
+            <label><input type="checkbox" value="bulb" /> Bulb</label>
+            <label><input type="checkbox" value="metal" /> Metal Screw</label>
+            <label><input type="checkbox" value="plastic" /> Plastic Straw</label>
+            <label><input type="checkbox" value="rubber" /> Rubber Item</label>
+          </div>
+          <button type="button" class="btn btn-small" id="check-circuit">Test Circuit</button>
+          <div class="bulb-display" aria-live="polite">
+            <div id="bulb" class="bulb" role="img" aria-label="Light bulb status"></div>
+          </div>
+          <p id="circuit-feedback" class="activity-feedback"></p>
+        </article>
+
+        <article class="card" id="music-playground">
+          <h3>B. Music Playground</h3>
+          <p>Higher frequency means higher pitch. Change pitch and rhythm, then press play.</p>
+          <label for="pitch-slider">Pitch / Frequency: <span id="pitch-value">440</span> Hz</label>
+          <input id="pitch-slider" type="range" min="120" max="1200" value="440" />
+
+          <label for="rhythm-slider">Rhythm Speed: <span id="rhythm-value">2</span> notes/sec</label>
+          <input id="rhythm-slider" type="range" min="1" max="6" value="2" />
+
+          <div class="button-row">
+            <button type="button" class="btn btn-small" id="play-music">Play</button>
+            <button type="button" class="btn btn-small btn-ghost" id="stop-music">Stop</button>
+          </div>
+          <p id="music-feedback" class="activity-feedback">Try 880 Hz to hear a much higher pitch.</p>
+        </article>
+
+        <article class="card" id="pulse-tempo-lab">
+          <h3>C. Pulse-to-Tempo Drum Lab (4/4)</h3>
+          <p>Heart rate and music both use BPM (beats per minute). Set a tempo, then hear a drum groove that follows it.</p>
+          <label for="pulse-bpm-slider">Tempo BPM: <span id="pulse-bpm-value">96</span></label>
+          <input id="pulse-bpm-slider" type="range" min="40" max="180" value="96" />
+
+          <div class="button-row">
+            <button type="button" class="btn btn-small" id="pulse-start">Start Beat</button>
+            <button type="button" class="btn btn-small btn-ghost" id="pulse-stop">Stop Beat</button>
+          </div>
+
+          <div class="beat-visual" aria-live="polite" aria-label="Current beat in four four">
+            <p>Current beat: <strong id="beat-indicator">1</strong> / 4</p>
+            <div class="beat-lights" role="group" aria-label="Beat lights">
+              <span class="beat-light active" data-beat="1">1</span>
+              <span class="beat-light" data-beat="2">2</span>
+              <span class="beat-light" data-beat="3">3</span>
+              <span class="beat-light" data-beat="4">4</span>
+            </div>
+          </div>
+
+          <div class="heart-zone" aria-live="polite">
+            <div id="pulse-heart" class="heart" aria-hidden="true"></div>
+          </div>
+          <p class="activity-feedback" id="pulse-feedback">Kick plays on beats 1 and 3, snare on 2 and 4, and hi-hat on every eighth note.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Parent and Teacher Guide
+         A brief note for adults explaining the age range, the learning
+         approach, and basic safety guidelines for the hardware projects. -->
+    <section id="parents" class="section reveal" aria-labelledby="parents-title">
+      <div class="section-heading">
+        <h2 id="parents-title">Parent and Teacher Guide</h2>
+      </div>
+      <article class="card">
+        <p>Brain Music Lab supports ages 10-15 with project-based learning that blends science, electronics, music, and coding. Students learn by watching, predicting, testing, and explaining what they observe.</p>
+        <p>Activities are designed to encourage curiosity, creative problem-solving, and confidence with STEM tools in a fun, welcoming way.</p>
+        <p><strong>Safety note:</strong> Always supervise electronics experiments, use low-voltage components, and avoid mixing wires with water or damaged batteries.</p>
+      </article>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p><strong>Brain Music Lab</strong></p>
+    <p>Created for curious minds exploring science through sound.</p>
+    <nav aria-label="Footer links">
+      <a href="#lessons">Lessons</a>
+      <a href="#activity-hub">Activities</a>
+      <a href="#home">Back to Top</a>
+    </nav>
+  </footer>
+</body>
 </html>
